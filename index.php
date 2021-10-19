@@ -23,7 +23,19 @@ const DEFAULT_ACTION = 'list';
 $action = $_GET['action'] ?? DEFAULT_ACTION;
 
 $view = new View();
-$view->render($action);
+
+$viewParams = [];
+if($action === 'create') {
+    $page = 'create';
+    $viewParams['resultCreate'] = "udało się";
+}
+else {
+    $page = 'list';
+    $viewParams['resultList'] = "Wyświetlamy notatki";
+}
+
+
+$view->render($page, $viewParams);
 //htmlentities($action) w celu unikniecia np. wykonywania się javascriptowego pliku który np. mółby wygrać dane do logowania z ciasteczek
 
 

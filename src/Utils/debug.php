@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-error_reporting(E_ALL);
+error_reporting(E_ALL); //for production switch off , pass 0 
 ini_set('display errors', "1"); //ustawia rzeczy konfiguracyjne php 
 
 function dump($data)
