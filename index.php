@@ -7,9 +7,8 @@ namespace App;
 
 // include - includuje plik, w którym mamy jakiś kod, którego chcemy użyć.
 include ("src/Utils/debug.php");
-require_once("src/View.php");
+require_once("src/Controller.php");
 
-const DEFAULT_ACTION = 'list';
 
 // include_once - zaimportowany może być tylko jeden raz, gdy zainkludujemy go drugi raz to już to php zignoruje.
 
@@ -20,31 +19,16 @@ const DEFAULT_ACTION = 'list';
 // $test = 'test';
 
 // dump($test);
-$action = $_GET['action'] ?? DEFAULT_ACTION;
-
-$view = new View();
-
-$viewParams = [];
-if($action === 'create') {
-    $created = false; 
-    $page = 'create';
-    if(!empty($_POST)){
-        $created = true; 
-        $viewParams = [
-            'title' => $_POST['title'],
-            'description' => $_POST['description']
-        ];
-    }
-    $viewParams['created'] = $created;
-}
-else {
-    $page = 'list';
-    $viewParams['resultList'] = "Wyświetlamy notatki";
-}
 
 
-$view->render($page, $viewParams);
-//htmlentities($action) w celu unikniecia np. wykonywania się javascriptowego pliku który np. mółby wygrać dane do logowania z ciasteczek
+
+$controller = new Controller($_GET, $_POST);
+
+$controller->run();
+
+
+
+
 
 
 
