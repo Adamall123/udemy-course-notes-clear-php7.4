@@ -9,7 +9,6 @@ class View
 {
     public function render(string $page, array $params): void
     {
-        dump($params);
         require_once("templates/pages/layout.php");
     }
 }
