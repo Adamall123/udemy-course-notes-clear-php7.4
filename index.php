@@ -1,5 +1,10 @@
 <?php 
 
+
+declare(strict_types = 1); //https://stackoverflow.com/questions/48723637/what-do-strict-types-do-in-php
+
+namespace App;
+
 // include - includuje plik, w którym mamy jakiś kod, którego chcemy użyć.
 include ("src/Utils/debug.php");
 // include_once - zaimportowany może być tylko jeden raz, gdy zainkludujemy go drugi raz to już to php zignoruje.

@@ -1,5 +1,9 @@
 <?php 
 
+declare(strict_types = 1);
+
+error_reporting(E_ALL);
+ini_set('display errors', "1"); //ustawia rzeczy konfiguracyjne php 
 
 function dump($data)
 {
