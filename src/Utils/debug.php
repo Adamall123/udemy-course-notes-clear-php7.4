@@ -7,7 +7,7 @@ ini_set('display errors', "1"); //ustawia rzeczy konfiguracyjne php
 
 function dump($data)
 {
-    echo '<div 
+    echo '<br/><div 
     style="
     display: inline-block;
     padding: 0px 10px;
@@ -17,5 +17,5 @@ function dump($data)
     <pre>';
     print_r($data);
     echo '</pre></div>
-    </br>';
+    <br/>';
 }
