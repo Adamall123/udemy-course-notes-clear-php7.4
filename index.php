@@ -26,8 +26,16 @@ $view = new View();
 
 $viewParams = [];
 if($action === 'create') {
+    $created = false; 
     $page = 'create';
-    $viewParams['resultCreate'] = "udało się";
+    if(!empty($_POST)){
+        $created = true; 
+        $viewParams = [
+            'title' => $_POST['title'],
+            'description' => $_POST['description']
+        ];
+    }
+    $viewParams['created'] = $created;
 }
 else {
     $page = 'list';
