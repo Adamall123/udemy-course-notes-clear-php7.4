@@ -27,11 +27,11 @@
         <div class="tbl-content">
             <table cellpadding="0" cellspacing="0" border="0">
                 <tbody>
-                    <?php foreach($params['notes'] as $note): ?>
+                    <?php foreach($params['notes'] ?? [] as $note): ?>
                         <tr>
-                            <td><?php echo $note['id']; ?></td>
-                            <td><?php echo $note['title']; ?></td>
-                            <td><?php echo $note['created'];?></td>
+                            <td><?php echo (int) $note['id'] ?></td>
+                            <td><?php echo htmlentities($note['title']) ?></td>
+                            <td><?php echo htmlentities($note['created'])?></td>
                             <td>Opcje</td>
                         </tr>
                     <?php endforeach; ?>
