@@ -1,7 +1,7 @@
 <div class="list">
     <section>
         <div class="message">
-            <?php if(!empty($params)): ?>
+            <?php if(!empty($params['before'])): ?>
                 <?php 
                 switch($params['before']) {
                     case 'created':
@@ -11,7 +11,17 @@
                 ?>
             <?php endif; ?>
         </div>
-       
+        <div class="message">
+            <?php if(!empty($params['error'])): ?>
+                <?php 
+                switch($params['error']) {
+                    case 'noteNotFound':
+                        echo 'Notatka nie została znaleziona';
+                        break;
+                }    
+                ?>
+            <?php endif; ?>
+        </div>
         <div class="tbl-header">
             <table cellpadding="0" cellspacing="0" border="0">
                 <thead>
@@ -32,7 +42,10 @@
                             <td><?php echo (int) $note['id'] ?></td>
                             <td><?php echo htmlentities($note['title']) ?></td>
                             <td><?php echo htmlentities($note['created'])?></td>
-                            <td>Opcje</td>
+                            <td>
+                                <a href="/?action=show&id=<?php echo (int) $note['id'] ?>">
+                               <button>Szczegóły</button> </a>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

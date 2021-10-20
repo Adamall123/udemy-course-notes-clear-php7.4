@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App;
 
-require_once("Exception\StorageException.php");
-
+require_once("Exception/StorageException.php");
+require_once("Exception/NotFoundException.php");
 use App\Exception\ConfigurationException;
 use App\Exception\StorageException;
+use App\Exception\NotFoundException;
 use PDO;
 use PDOException;
 use Throwable;
@@ -62,6 +63,20 @@ class Database
             throw new StorageException("The data has not been get.", 400, $e);
         }
         
+    }
+    public function getNote(int $id): array 
+    {
+        try{
+            $query = "SELECT * FROM notes WHERE id=$id";
+            $result = $this->conn->query($query);
+            $note = $result->fetch(PDO::FETCH_ASSOC);   
+        }catch(Throwable $e){
+            throw new StorageException("The note has noot been get", 400);
+        }
+        if(!$note) {
+            throw new NotFoundException("Notatka o id: $id nie istnieje");
+        }
+        return $note;
     }
     private function createConnection(array $config): void 
     {
