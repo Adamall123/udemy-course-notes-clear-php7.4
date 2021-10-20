@@ -8,7 +8,7 @@ namespace App;
 // include - includuje plik, w którym mamy jakiś kod, którego chcemy użyć.
 include ("src/Utils/debug.php");
 require_once("src/Controller.php");
-
+$configuration = require_once("config/config.php");
 
 // include_once - zaimportowany może być tylko jeden raz, gdy zainkludujemy go drugi raz to już to php zignoruje.
 
@@ -27,7 +27,7 @@ $request = [
 
 // $controller = new Controller($request);
 // $controller->run();
-
+Controller::initConfiguration($configuration);
 (new Controller($request))->run();
 
 
