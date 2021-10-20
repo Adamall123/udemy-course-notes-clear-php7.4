@@ -49,7 +49,20 @@ class Database
             exit;
         }
     }
-
+    public function getNotes(): array
+    {
+        try{
+            $query = "SELECT id,title ,created FROM notes";
+            $result = $this->conn->query($query);
+            return $result->fetchAll(PDO::FETCH_ASSOC);
+            // foreach($result as $row) {
+            //     $notes[] = $row;
+            // }
+        }catch(Throwable $e){
+            throw new StorageException("The data has not been get.", 400, $e);
+        }
+        
+    }
     private function createConnection(array $config): void 
     {
         $dsn = "mysql:dbname={$config['database']};host={$config['host']}";
