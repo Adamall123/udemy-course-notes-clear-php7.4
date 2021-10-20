@@ -20,14 +20,15 @@ require_once("src/Controller.php");
 
 // dump($test);
 
+$request = [
+    'get' => $_GET,
+    'post' => $_POST
+];
 
+// $controller = new Controller($request);
+// $controller->run();
 
-$controller = new Controller($_GET, $_POST);
-
-$controller->run();
-
-
-
+(new Controller($request))->run();
 
 
 
