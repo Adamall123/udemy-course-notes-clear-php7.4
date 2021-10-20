@@ -7,10 +7,12 @@
         <li><?php echo htmlentities(($note['description'])) ?></li>
         <li>zapisano: <?php echo htmlentities(($note['created'])) ?></li>
     </ul>
-    <a href="/">
+    <?php else: ?>
+       <div>Brak notatki do wyświetlenia </div> 
+    <?php endif; ?>
+</div>
+<a href="/">
        <button>
          Powrót do listy notatek
        </button> 
     </a>
-    <?php endif; ?>
-</div>

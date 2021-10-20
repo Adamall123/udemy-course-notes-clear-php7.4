@@ -15,6 +15,9 @@
             <?php if(!empty($params['error'])): ?>
                 <?php 
                 switch($params['error']) {
+                    case 'missingNoteId':
+                        echo 'Niepoprawny identyfikator notatki';
+                        break;
                     case 'noteNotFound':
                         echo 'Notatka nie została znaleziona';
                         break;

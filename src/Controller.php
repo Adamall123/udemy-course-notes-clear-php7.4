@@ -46,16 +46,23 @@ class Controller
                     'description' => $data['description']
                 ]);
                 header('Location: /?before=created');
+                exit;
                 }
             break;
             case 'show':
                 $page = 'show';
                 $data = $this->getRequestGet();
-                $noteId = (int) $data['id'];
+                $noteId = (int) ($data['id'] ?? null);
+
+                if(!$noteId){
+                    header('Location: /?error=missingNoteId');
+                    exit;
+                }
                 try{
                     $note = $this->database->getNote($noteId);
                 }catch(NotFoundException $e){
                     header('Location: /?error=noteNotFound');
+                    exit;
                 }
                
                 $viewParams = [
