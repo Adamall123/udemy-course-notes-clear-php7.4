@@ -14,6 +14,7 @@ class Controller
 {
     private const DEFAULT_ACTION = 'list';
     private array $request;
+    private Database $database; 
     private View $view;
     private static array $configuration = []; 
     public static function initConfiguration(array $configuration): void 
@@ -26,7 +27,7 @@ class Controller
         if(empty(self::$configuration['db'])){
             throw new ConfigurationException("Configuration error");
         }
-        $db = new Database(self::$configuration['db']);   
+        $this->database = new Database(self::$configuration['db']);   
         $this->request = $request;
         $this->view = new View();
     }
@@ -42,11 +43,9 @@ class Controller
 
                 $data = $this->getRequestPost();
                 if(!empty($data)){
+                $this->database->createNote($data);
                 $created = true; 
-                $viewParams = [
-                    'title' => $data['title'],
-                    'description' => $data['description']
-                ];
+                header('Location: /');
                 }
                 $viewParams['created'] = $created;
             break;
