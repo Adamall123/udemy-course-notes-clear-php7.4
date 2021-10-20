@@ -5,6 +5,10 @@ declare(strict_types = 1); //https://stackoverflow.com/questions/48723637/what-d
 
 namespace App;
 
+use App\Exception\AppException;
+use App\Exception\ConfigurationException;
+use Throwable;
+
 // include - includuje plik, w którym mamy jakiś kod, którego chcemy użyć.
 include ("src/Utils/debug.php");
 require_once("src/Controller.php");
@@ -25,10 +29,23 @@ $request = [
     'post' => $_POST
 ];
 
-// $controller = new Controller($request);
-// $controller->run();
-Controller::initConfiguration($configuration);
-(new Controller($request))->run();
+try{
+  // $controller = new Controller($request);
+  // $controller->run();
+  Controller::initConfiguration($configuration);
+  (new Controller($request))->run();
+} catch(ConfigurationException $e){
+    dump($e->getMessage());
+    echo '<h1>Wystąpił błąd</h1>';
+    echo 'Problem z konfiguracją.Proszę skontaktować się z administratorem';
+} catch(AppException $e){
+    echo "<h1>Wystąpił błąd</h1>";
+    echo "<h3>" . $e->getMessage() . " </h3>";
+} catch(Throwable $e){
+    echo "<h1>Wystąpił błąd</h1>";
+}
+
+
 
 
 
