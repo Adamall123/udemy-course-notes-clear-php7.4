@@ -5,6 +5,7 @@ declare(strict_types = 1); //https://stackoverflow.com/questions/48723637/what-d
 
 namespace App;
 
+use App\Request;
 use App\Exception\AppException;
 use App\Exception\ConfigurationException;
 use Throwable;
@@ -12,6 +13,8 @@ use Throwable;
 // include - includuje plik, w którym mamy jakiś kod, którego chcemy użyć.
 include ("src/Utils/debug.php");
 require_once("src/Controller.php");
+require_once("src/Request.php");
+
 $configuration = require_once("config/config.php");
 
 // include_once - zaimportowany może być tylko jeden raz, gdy zainkludujemy go drugi raz to już to php zignoruje.
@@ -24,10 +27,9 @@ $configuration = require_once("config/config.php");
 
 // dump($test);
 
-$request = [
-    'get' => $_GET,
-    'post' => $_POST
-];
+
+$request = new Request($_GET, $_POST);
+
 
 try{
   // $controller = new Controller($request);
