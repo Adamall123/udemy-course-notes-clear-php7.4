@@ -34,10 +34,8 @@ class Controller
         $this->request = $request;
         $this->view = new View();
     }
-    public function create()
+    public function createAction()
     {
-        $page = 'create';
-
                 if($this->request->hasPost()){
                 $this->database->createNote([
                     'title' => $this->request->postParam('title'),
@@ -46,14 +44,10 @@ class Controller
                 header('Location: /?before=created');
                 exit;
                 }
-        $this->view->render($page, $viewParams ?? []);
+        $this->view->render('create');
     }
-    public function show()
+    public function showAction()
     {
-        $page = 'show';
-                // $data = $this->getRequestGet();
-                // $noteId = (int) ($data['id'] ?? null);
-
                 $noteId = (int) $this->request->getParam('id');
     
                 if(!$noteId){
@@ -67,36 +61,29 @@ class Controller
                     exit;
                 }
                
-                $viewParams = [
-                    'note' => $note
-                ];
-        $this->view->render($page, $viewParams ?? []);
+            $this->view->render(
+            'show',
+             ['note' => $note]
+            );
     }
-    public function list()
+    public function listAction()
     {
-        $page = 'list';
-                //$data = $this->getRequestGet();
-
-                $viewParams = [
-                    'notes' => $this->database->getNotes(),
-                    'before' => $this->request->getParam('before'),
-                    'error' =>  $this->request->getParam('error') 
-                ];   
-        $this->view->render($page, $viewParams ?? []);
+        $this->view->render(
+            'list',
+            [
+                'notes' => $this->database->getNotes(),
+                'before' => $this->request->getParam('before'),
+                'error' =>  $this->request->getParam('error') 
+            ]
+            );
     }
     public function run(): void 
     {
-        switch($this->action()){
-            case 'create':
-                $this->create();
-            break;
-            case 'show':
-                $this->show();
-            break;
-            default:
-                $this->list();            
-            break;
+        $action = $this->action() . 'Action';
+        if(!method_exists($this, $action)){
+            $action = self::DEFAULT_ACTION . 'Action';
         }
+        $this->$action();
         
     }
    
