@@ -34,12 +34,9 @@ class Controller
         $this->request = $request;
         $this->view = new View();
     }
-    
-    public function run(): void 
+    public function create()
     {
-        switch($this->action()){
-            case 'create':
-                $page = 'create';
+        $page = 'create';
 
                 if($this->request->hasPost()){
                 $this->database->createNote([
@@ -49,10 +46,11 @@ class Controller
                 header('Location: /?before=created');
                 exit;
                 }
-            break;
-            case 'show':
-                
-                $page = 'show';
+        $this->view->render($page, $viewParams ?? []);
+    }
+    public function show()
+    {
+        $page = 'show';
                 // $data = $this->getRequestGet();
                 // $noteId = (int) ($data['id'] ?? null);
 
@@ -72,19 +70,34 @@ class Controller
                 $viewParams = [
                     'note' => $note
                 ];
-            break;
-            default:
-                $page = 'list';
+        $this->view->render($page, $viewParams ?? []);
+    }
+    public function list()
+    {
+        $page = 'list';
                 //$data = $this->getRequestGet();
 
                 $viewParams = [
                     'notes' => $this->database->getNotes(),
                     'before' => $this->request->getParam('before'),
                     'error' =>  $this->request->getParam('error') 
-                ];              
+                ];   
+        $this->view->render($page, $viewParams ?? []);
+    }
+    public function run(): void 
+    {
+        switch($this->action()){
+            case 'create':
+                $this->create();
+            break;
+            case 'show':
+                $this->show();
+            break;
+            default:
+                $this->list();            
             break;
         }
-        $this->view->render($page, $viewParams ?? []);
+        
     }
    
     private function action(): string
