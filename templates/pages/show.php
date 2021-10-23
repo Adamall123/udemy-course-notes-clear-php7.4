@@ -7,12 +7,13 @@
         <li><?php echo $note['description'] ?></li>
         <li>zapisano: <?php echo $note['created'] ?></li>
     </ul>
-    <?php else: ?>
-       <div>Brak notatki do wyświetlenia </div> 
-    <?php endif; ?>
-</div>
-<a href="/">
+    <a href="/?action=edit&id=<?php echo $note['id'] ?>"><button>Edytuj</button></a>
+    <a href="/">
        <button>
          Powrót do listy notatek
        </button> 
     </a>
+    <?php else: ?>
+       <div>Brak notatki do wyświetlenia </div> 
+    <?php endif; ?>
+</div>

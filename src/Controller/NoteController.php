@@ -53,4 +53,23 @@ class NoteController extends AbstractController
             );
     }
     
+    public function editAction()
+    {
+        $noteId = (int) $this->request->getParam('id');
+        if(!$noteId){
+            header('Location: /?error=missingNoteId');
+            exit;
+        }
+        try{
+            $note = $this->database->getNote($noteId);
+        }catch(NotFoundException $e){
+            header('Location: /?error=noteNotFound');
+            exit;
+        }
+       
+        $this->view->render(
+        'edit',
+        ['note' => $note]
+        );
+    }
 }
