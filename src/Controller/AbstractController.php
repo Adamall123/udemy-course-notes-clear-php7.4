@@ -39,7 +39,7 @@ abstract class AbstractController
         $this->$action();
         
     }
-    protected function redirect(string $to, array $params): void 
+    final protected function redirect(string $to, array $params): void 
     {
         $location = $to; 
 
@@ -55,7 +55,7 @@ abstract class AbstractController
         header("Location: $location");
         exit;
     }
-    private function action(): string
+    final private function action(): string
     {
         return  $this->request->getParam('action',self::DEFAULT_ACTION); 
     }

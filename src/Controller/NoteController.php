@@ -63,7 +63,7 @@ class NoteController extends AbstractController
         exit('delete');
     }
 
-    private function getNote(): array
+    final private function getNote(): array
     {
         $noteId = (int) $this->request->getParam('id');
         if(!$noteId){
