@@ -9,7 +9,7 @@ use App\Exception\NotFoundException;
 
 class NoteController extends AbstractController
 {
-    public function createAction()
+    public function createAction(): void
     {
                 if($this->request->hasPost()){
                 $this->database->createNote([
@@ -20,7 +20,7 @@ class NoteController extends AbstractController
                 }
         $this->view->render('create');
     }
-    public function showAction()
+    public function showAction(): void 
     {
                 $noteId = (int) $this->request->getParam('id');
     
@@ -38,7 +38,7 @@ class NoteController extends AbstractController
              ['note' => $note]
             );
     }
-    public function listAction()
+    public function listAction(): void
     {
         $this->view->render(
             'list',
@@ -50,7 +50,7 @@ class NoteController extends AbstractController
             );
     }
     
-    public function editAction()
+    public function editAction(): void
     {
         if($this->request->isPost()){
             $noteId = (int) $this->request->postParam('id');
@@ -77,4 +77,5 @@ class NoteController extends AbstractController
         ['note' => $note]
         );
     }
+    
 }
