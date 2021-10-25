@@ -11,6 +11,7 @@ use App\Exception\ConfigurationException;
 
 abstract class AbstractController
 {
+    protected const PAGE_SIZE = 10; 
     protected const DEFAULT_ACTION = 'list';
     protected Request $request;
     protected Database $database; 

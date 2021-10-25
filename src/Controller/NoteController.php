@@ -29,12 +29,20 @@ class NoteController extends AbstractController
     }
     public function listAction(): void
     {
-       
+        $pageNumber = $this->request->getParam('page', 1); 
+        $pageSize = $this->request->getParam('pagesize', self::PAGE_SIZE); 
+
         $sortBy = $this->request->getParam('sortby', 'title');
         $sortOrder = $this->request->getParam('sortorder', 'desc');
+       
+        if(!in_array($pageSize, [1, 5, 10, 25])){
+            $pageSize = self::PAGE_SIZE;
+        }
+        
         $this->view->render(
             'list',
             [
+                'page' => ['number' => $pageNumber, 'size' => $pageSize],
                 'sort' => [
                     'by' => $sortBy,
                     'order' => $sortOrder
@@ -44,6 +52,7 @@ class NoteController extends AbstractController
                 'error' =>  $this->request->getParam('error') 
             ]
             );
+           
     }
     
     public function editAction(): void
