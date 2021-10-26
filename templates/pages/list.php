@@ -96,25 +96,25 @@
                 </tbody>
             </table>
         </div>
-            
+        <?php $paginationURL = "&pagesize=$size&sortby=$by&sortorder=$order";  ?>
         <ul class="pagination">
         <?php if($currentPage !== 1): ?>
             <li>
-                <a href="/?page=<?php echo $currentPage - 1 ?>&pagesize=<?php echo $size?>&sortby=<?php echo $by ?>&sortorder=<?php echo $order?> ">
+                <a href="/?page=<?php echo $currentPage - 1 . $paginationURL ?>">
                     <button><<</button>
                 </a>
             </li>
             <?php endif; ?>
                 <?php for($i = 1; $i <= $pages; $i++): ?>
                     <li>
-                        <a href="/?page=<?php echo $i ?>&pagesize=<?php echo $size?>&sortby=<?php echo $by ?>&sortorder=<?php echo $order?> ">
+                        <a href="/?page=<?php echo $i . $paginationURL?>">
                             <button><?php echo $i ?></button>
                         </a>
                     </li>
                 <?php endfor;?>
                 <?php if($currentPage < $pages): ?>
                 <li>
-                <a href="/?page=<?php echo $currentPage + 1 ?>&pagesize=<?php echo $size?>&sortby=<?php echo $by ?>&sortorder=<?php echo $order?> ">
+                <a href="/?page=<?php echo $currentPage + 1 . $paginationURL ?>">
                     <button>>></button>
                 </a>
             </li>
