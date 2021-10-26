@@ -67,6 +67,21 @@ class Database
             throw new StorageException('Nie udało się zedytować notatki.',400);
         }
     }
+    public function getCountNotes(): int
+    {
+        try{
+            $query = "SELECT count(*) FROM notes";
+            $result = $this->conn->query($query);
+            $amountOfNotes =  $result->fetch(PDO::FETCH_BOTH);
+            if($amountOfNotes === false){
+                throw new StorageException("Błąd przy próbie pobrania ilości notatek", 400);
+            }
+            return (int) $amountOfNotes[0];
+        }catch(Throwable $e){
+            throw new StorageException("Nie udao się pobrać informacji o liczbe notatek", 400, $e);
+        }
+        
+    }
     public function getNotes(
         int $pageNumber,
          int $pageSize,
