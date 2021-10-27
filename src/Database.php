@@ -82,14 +82,46 @@ class Database
         }
         
     }
+    public function searchNotes(
+        string $phrase, 
+        int $pageNumber,
+        int $pageSize,
+        string $sortBy,
+        string $sortOrder
+    ): array
+    {
+         try{
+           
+            $limit = $pageSize; 
+            $offset = ($pageNumber - 1) * $pageSize;
+            if(!in_array($sortBy, ['created', 'title'])){
+                $sortBy = 'title';
+            }
+            if(!in_array($sortOrder, ['asc', 'desc'])){
+                $sortOrder = 'desc';
+            }
+            $phrase = $this->conn->quote('%' . $phrase . '%', PDO::PARAM_STR);
+            $query = "SELECT id,title ,created 
+                      FROM notes
+                      WHERE title LIKE ($phrase)
+                      ORDER BY $sortBy $sortOrder
+                      LIMIT $offset, $limit
+                      ";
+            
+            $result = $this->conn->query($query);
+            return $result->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Throwable $e){
+            throw new StorageException("The data has not been get.", 400, $e);
+        }
+    }
+    
     public function getNotes(
         int $pageNumber,
-         int $pageSize,
-          string $sortBy,
-           string $sortOrder
-           ): array
+        int $pageSize,
+        string $sortBy,
+        string $sortOrder
+    ): array
     {
-        
         try{
 
             $limit = $pageSize; 
