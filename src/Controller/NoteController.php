@@ -35,23 +35,31 @@ class NoteController extends AbstractController
         $sortBy = $this->request->getParam('sortby', 'title');
         $sortOrder = $this->request->getParam('sortorder', 'desc');
         
-       
+        $phrase = $this->request->getParam('phrase');
+
         if(!in_array($pageSize, [1, 5, 10, 25])){
             $pageSize = self::PAGE_SIZE;
         }
         
-        $note = $this->database->getNotes($pageNumber, $pageSize, $sortBy,$sortOrder);
+        if($phrase){
+            $note = $this->database->searchNotes($phrase, $pageNumber, $pageSize, $sortBy,$sortOrder);
+            $noteAmount = $this->database->getSearchCount($phrase);
+        }else {
+            $note = $this->database->getNotes($pageNumber, $pageSize, $sortBy,$sortOrder);
+            $noteAmount = $this->database->getCountNotes();
+        }
+
         
-        $noteAmount = $this->database->getCountNotes();
         
         $this->view->render(
             'list',
             [
-                'page' => [
+                'page' => [                    
                     'number' => $pageNumber, 
                     'size' => $pageSize,
                     'pages' => (int) ceil($noteAmount/$pageSize)
                 ],
+                'phrase' => $phrase,
                  'sort' => [
                     'by' => $sortBy,
                     'order' => $sortOrder
