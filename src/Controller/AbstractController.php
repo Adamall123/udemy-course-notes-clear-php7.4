@@ -5,18 +5,19 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Request;
-use App\Database;
 use App\View;
+use App\Model\NoteModel;
 use App\Exception\ConfigurationException;
 use App\Exception\NotFoundException;
 use App\Exception\StorageException;
+
 
 abstract class AbstractController
 {
     protected const PAGE_SIZE = 10; 
     protected const DEFAULT_ACTION = 'list';
     protected Request $request;
-    protected Database $database; 
+    protected NoteModel $noteModel; 
     protected View $view;
     private static array $configuration = []; 
     public static function initConfiguration(array $configuration): void 
@@ -29,7 +30,7 @@ abstract class AbstractController
         if(empty(self::$configuration['db'])){
             throw new ConfigurationException("Configuration error");
         }
-        $this->database = new Database(self::$configuration['db']);   
+        $this->noteModel = new NoteModel(self::$configuration['db']);   
         $this->request = $request;
         $this->view = new View();
     }
