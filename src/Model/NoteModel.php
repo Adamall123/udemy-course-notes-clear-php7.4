@@ -75,29 +75,7 @@ class NoteModel extends AbstractModel
         string $sortOrder
     ): array
     {
-         try{
-           
-            $limit = $pageSize; 
-            $offset = ($pageNumber - 1) * $pageSize;
-            if(!in_array($sortBy, ['created', 'title'])){
-                $sortBy = 'title';
-            }
-            if(!in_array($sortOrder, ['asc', 'desc'])){
-                $sortOrder = 'desc';
-            }
-            $phrase = $this->conn->quote('%' . $phrase . '%', PDO::PARAM_STR);
-            $query = "SELECT id,title ,created 
-                      FROM notes
-                      WHERE title LIKE ($phrase)
-                      ORDER BY $sortBy $sortOrder
-                      LIMIT $offset, $limit
-                      ";
-            
-            $result = $this->conn->query($query);
-            return $result->fetchAll(PDO::FETCH_ASSOC);
-        }catch(Throwable $e){
-            throw new StorageException("The data has not been get.", 400, $e);
-        }
+        return $this->findBy($phrase, $pageNumber, $pageSize, $sortBy, $sortOrder);
     }
     public function getSearchCount(string $phrase): int 
     {
@@ -121,30 +99,7 @@ class NoteModel extends AbstractModel
         string $sortOrder
     ): array
     {
-        try{
-
-            $limit = $pageSize; 
-            $offset = ($pageNumber - 1) * $pageSize;
-            if(!in_array($sortBy, ['created', 'title'])){
-                $sortBy = 'title';
-            }
-            if(!in_array($sortOrder, ['asc', 'desc'])){
-                $sortOrder = 'desc';
-            }
-            $query = "SELECT id,title ,created 
-                      FROM notes
-                      ORDER BY $sortBy $sortOrder
-                      LIMIT $offset, $limit
-                      ";
-            $result = $this->conn->query($query);
-            return $result->fetchAll(PDO::FETCH_ASSOC);
-            // foreach($result as $row) {
-            //     $notes[] = $row;
-            // }
-        }catch(Throwable $e){
-            throw new StorageException("The data has not been get.", 400, $e);
-        }
-        
+        return $this->findBy(null, $pageNumber, $pageSize, $sortBy, $sortOrder);
     }
     public function getNote(int $id): array 
     {
@@ -169,5 +124,39 @@ class NoteModel extends AbstractModel
             throw new StorageException('Nie udało się usunąć notatki', 400);
         }
     }
-    
+    private function findBy(
+        ?string $phrase, 
+        int $pageNumber,
+        int $pageSize,
+        string $sortBy,
+        string $sortOrder
+    ): array
+    {
+        try{
+            $limit = $pageSize; 
+            $offset = ($pageNumber - 1) * $pageSize;
+            if(!in_array($sortBy, ['created', 'title'])){
+                $sortBy = 'title';
+            }
+            if(!in_array($sortOrder, ['asc', 'desc'])){
+                $sortOrder = 'desc';
+            }
+            $wherePart = '';
+            if($phrase){
+                $phrase = $this->conn->quote('%' . $phrase . '%', PDO::PARAM_STR);
+                $wherePart = "WHERE title LIKE ($phrase)";
+            }
+            $query = "SELECT id,title ,created 
+                      FROM notes
+                      $wherePart
+                      ORDER BY $sortBy $sortOrder
+                      LIMIT $offset, $limit
+                      ";
+            
+            $result = $this->conn->query($query);
+            return $result->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Throwable $e){
+            throw new StorageException("The data has not been get.", 400, $e);
+        }
+    }
 }
