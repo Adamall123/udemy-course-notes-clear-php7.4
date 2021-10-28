@@ -102,19 +102,12 @@ class NoteController extends AbstractController
             );
         exit('delete');
     }
-
     private function getNote(): array
     {
         $noteId = (int) $this->request->getParam('id');
         if(!$noteId){
             $this->redirect('/', ['error' => 'missingNoteId']);
         }
-        try{
-            $note = $this->database->getNote($noteId);
-        }catch(NotFoundException $e){
-            header('Location: /?error=noteNotFound');
-            exit;
-        }
-        return $note;
+        return $this->database->getNote($noteId);
     }
 }
