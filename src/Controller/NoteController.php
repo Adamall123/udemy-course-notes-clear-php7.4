@@ -9,7 +9,7 @@ class NoteController extends AbstractController
     public function createAction(): void
     {
                 if($this->request->hasPost()){
-                $this->noteModel->createNote([
+                $this->noteModel->create([
                     'title' => $this->request->postParam('title'),
                     'description' => $this->request->postParam('description')
                 ]);
@@ -39,11 +39,11 @@ class NoteController extends AbstractController
         }
         
         if($phrase){
-            $note = $this->noteModel->searchNotes($phrase, $pageNumber, $pageSize, $sortBy,$sortOrder);
-            $noteAmount = $this->noteModel->getSearchCount($phrase);
+            $note = $this->noteModel->search($phrase, $pageNumber, $pageSize, $sortBy,$sortOrder);
+            $noteAmount = $this->noteModel->searchCount($phrase);
         }else {
-            $note = $this->noteModel->getNotes($pageNumber, $pageSize, $sortBy,$sortOrder);
-            $noteAmount = $this->noteModel->getCountNotes();
+            $note = $this->noteModel->list($pageNumber, $pageSize, $sortBy,$sortOrder);
+            $noteAmount = $this->noteModel->countNotes();
         }
 
         
@@ -77,7 +77,7 @@ class NoteController extends AbstractController
                 'title' => $this->request->postParam('title'),
                 'description' => $this->request->postParam('description')
             ];
-            $this->noteModel->editNote($noteId, $noteData);
+            $this->noteModel->edit($noteId, $noteData);
             $this->redirect('/',['before' => 'edited']);
         }
 
@@ -90,7 +90,7 @@ class NoteController extends AbstractController
     {
         if($this->request->isPost()){
             $noteId = (int) $this->request->postParam('id');
-            $this->noteModel->deleteNote($noteId);
+            $this->noteModel->delete($noteId);
             $this->redirect('/', ['before' => 'deleted']);
         }
         $this->view->render(
@@ -105,6 +105,6 @@ class NoteController extends AbstractController
         if(!$noteId){
             $this->redirect('/', ['error' => 'missingNoteId']);
         }
-        return $this->noteModel->getNote($noteId);
+        return $this->noteModel->get($noteId);
     }
 }
